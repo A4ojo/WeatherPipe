@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: weather_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: weather
+      POSTGRES_USER: weather_user
+      POSTGRES_PASSWORD: weather_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: weather_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  postgres_data:
+  grafana_data:
